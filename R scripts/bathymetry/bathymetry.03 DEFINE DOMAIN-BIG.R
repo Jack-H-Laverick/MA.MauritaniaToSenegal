@@ -62,12 +62,23 @@ ggplot() +
 
 #### Expand inshore and cut offshore ####
 
-
 inshore <- st_union(Distance, filter(Depths, Depth == 70)) %>% 
-  st_make_valid()
+  st_make_valid() %>% 
+  sfheaders::sf_remove_holes() %>% 
+  st_cast("POLYGON") %>% 
+  mutate(area = as.numeric(st_area(.))) %>% 
+  filter(area == max(area)) %>% 
+  dplyr::select(-area)
+
+offshore <- filter(Depths, Depth == 900) %>% 
+  sfheaders::sf_remove_holes() %>% 
+  st_cast("POLYGON") %>% 
+  mutate(area = as.numeric(st_area(.))) %>% 
+  filter(area == max(area)) %>% 
+  dplyr::select(-area)
 
 sf_use_s2(F)
-shrunk <- bind_rows(inshore, filter(Depths, Depth == 900)) %>%
+shrunk <- bind_rows(inshore, offshore) %>%
   st_make_valid() %>% 
   st_difference()
 

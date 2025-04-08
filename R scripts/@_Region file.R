@@ -71,13 +71,11 @@ ggplot() +
 
 #### expand polygon for sampling rivers ####
 
-river_expansion <- matrix(c(13, 73,
-                            0, 80,
-                            0, 85,
-                            63, 85,
-                            73, 77,
-                            30, 71,
-                            13, 73),
+river_expansion <- matrix(c(-16, 20,
+                            -20, 20,
+                            -20, 10.5,
+                            -16, 12.3,
+                            -16, 20),
                           ncol = 2, byrow = T) %>% 
   list() %>% 
   st_polygon() %>% 
